@@ -9,13 +9,24 @@ public class Bird : MonoBehaviour
     public float jumpSpeed;
     public float rotatePower;
     Rigidbody2D rb;
-
+    public GameObject endScreen;
     public TMP_Text BirdScoreText;
     public int birdScore = 0;
+    public float speed;
+    public GameObject yellow, red, blue;
+    float rng;
 
     void Start()
     {
+        rng = UnityEngine.Random.value;
         rb = GetComponent<Rigidbody2D>();
+        Pipe.speed = speed;
+
+        if (rng <= 0.3) { yellow.SetActive(true); }
+
+        else if (rng >= 0.3 && rng < 0.6) { red.SetActive(true); }
+
+        else { blue.SetActive(true); }
     }
 
     void Update()
@@ -41,7 +52,18 @@ public class Bird : MonoBehaviour
 
     void Die()
     {
-        var sceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(sceneName);
+        Pipe.speed = 0;
+        jumpSpeed = 0;
+        rb.velocity = Vector2.zero;
+        GetComponentInChildren<Animator>().enabled = false;
+        Invoke("ShowMenu", 1f);
+        //var sceneName = SceneManager.GetActiveScene().name;
+        //SceneManager.LoadScene(sceneName);
+    }
+
+    void ShowMenu()
+    {
+        endScreen.SetActive(true);
+        BirdScoreText.gameObject.SetActive(false);
     }
 }
