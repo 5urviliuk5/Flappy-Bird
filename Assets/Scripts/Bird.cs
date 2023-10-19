@@ -17,14 +17,9 @@ public class Bird : MonoBehaviour
     float rng;
     public GameObject flashEffect;
 
-
-    public AudioClip deathSound;
-    public AudioClip scoreSound;
-    public AudioClip swooshSound;
-    public AudioClip hitSound;
-    public AudioClip flapSound;
-
-    AudioSource source;
+    public AudioSource death;
+    public AudioSource flap;
+    public AudioSource score;
 
     void Start()
     {
@@ -44,7 +39,7 @@ public class Bird : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             rb.velocity = Vector2.up * jumpSpeed;
-            source.PlayOneShot(flapSound);
+            flap.Play();
         }
 
         transform.eulerAngles = new Vector3(0, 0, rb.velocity.y * rotatePower);
@@ -53,13 +48,14 @@ public class Bird : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other)
     {
         Die();
-        source.PlayOneShot(deathSound);
+       
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         birdScore++;
         BirdScoreText.text = birdScore.ToString();
+        score.Play();
     }
 
     void Die()
@@ -72,6 +68,8 @@ public class Bird : MonoBehaviour
         Invoke("ShowMenu", 1f);
         PlayerPrefs.SetInt("Score", birdScore);
         flashEffect.SetActive(true);
+
+        death.Play();
     }
 
     void ShowMenu()
