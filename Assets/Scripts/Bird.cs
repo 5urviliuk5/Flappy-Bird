@@ -38,6 +38,7 @@ public class Bird : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            
             rb.velocity = Vector2.up * jumpSpeed;
             flap.Play();
         }
